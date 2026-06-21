@@ -27,3 +27,7 @@ Homestead.yaml
 Thumbs.db
 guests-export.csv
 *.csv
+.claude/
+.mcp.json
+CLAUDE.md
+boost.json
