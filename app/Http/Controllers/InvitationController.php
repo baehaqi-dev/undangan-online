@@ -59,4 +59,73 @@ class InvitationController extends Controller
             'message' => 'Invitation deleted successfully',
         ]);
     }
+
+    public function statistics(Invitation $invitation)
+    {
+        $this->authorize('view', $invitation);
+
+        $totalGuests = $invitation->guests()->count();
+        $totalInvited = $invitation->guests()->whereNotNull('invited_at')->count();
+
+        $rsvpBreakdown = $invitation->rsvps()
+            ->selectRaw('attendance, COUNT(*) as count, SUM(total_guests) as total_people')
+            ->groupBy('attendance')
+            ->get()
+            ->keyBy('attendance');
+
+        return response()->json([
+            'total_guests' => $totalGuests,
+            'total_invited' => $totalInvited,
+            'total_rsvp_responses' => $invitation->rsvps()->count(),
+            'breakdown' => [
+                'hadir' => [
+                    'responses' => $rsvpBreakdown->get('hadir')->count ?? 0,
+                    'total_people' => (int) ($rsvpBreakdown->get('hadir')->total_people ?? 0),
+                ],
+                'tidak_hadir' => [
+                    'responses' => $rsvpBreakdown->get('tidak_hadir')->count ?? 0,
+                ],
+                'ragu_ragu' => [
+                    'responses' => $rsvpBreakdown->get('ragu_ragu')->count ?? 0,
+                ],
+            ],
+        ]);
+    }
+
+    public function exportGuests(Invitation $invitation)
+    {
+        $this->authorize('view', $invitation);
+
+        $guests = $invitation->guests()->with('rsvps')->get();
+
+        $filename = "guests-{$invitation->slug}.csv";
+
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => "attachment; filename={$filename}",
+        ];
+
+        $callback = function () use ($guests) {
+            $file = fopen('php://output', 'w');
+
+            fputcsv($file, ['Name', 'Phone', 'Invited At', 'RSVP Status', 'Total Guests', 'Message']);
+
+            foreach ($guests as $guest) {
+                $latestRsvp = $guest->rsvps->last();
+
+                fputcsv($file, [
+                    $guest->name,
+                    $guest->phone,
+                    $guest->invited_at?->format('Y-m-d H:i'),
+                    $latestRsvp->attendance ?? 'Belum respon',
+                    $latestRsvp->total_guests ?? '-',
+                    $latestRsvp->message ?? '-',
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
 }

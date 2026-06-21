@@ -26,6 +26,8 @@ Route::prefix('v1')->group(function () {
         });
 
         Route::apiResource('invitations', InvitationController::class);
+        Route::get('/invitations/{invitation}/statistics', [InvitationController::class, 'statistics']);
+        Route::get('/invitations/{invitation}/export-guests', [InvitationController::class, 'exportGuests']);
         Route::apiResource('invitations.guests', GuestController::class)->shallow();
         Route::get('/invitations/{invitation}/rsvps', [RsvpController::class, 'index']);
     });
