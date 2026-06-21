@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateInvitationRequest;
 use App\Http\Resources\InvitationResource;
 use App\Models\Invitation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class InvitationController extends Controller
 {
@@ -42,6 +43,8 @@ class InvitationController extends Controller
         $this->authorize('update', $invitation);
 
         $invitation->update($request->validated());
+
+        Cache::forget("invitation.{$invitation->id}");
 
         return new InvitationResource($invitation);
     }
