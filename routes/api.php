@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\InvitationController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
@@ -16,6 +17,8 @@ Route::prefix('v1')->group(function () {
         Route::get('/user', function (Illuminate\Http\Request $request) {
             return $request->user();
         });
+
+        Route::apiResource('invitations', InvitationController::class);
     });
 
 });
