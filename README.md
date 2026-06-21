@@ -105,4 +105,4 @@ Project ini menerapkan beberapa prinsip software engineering:
 
 ## 👤 Author
 
-Baehaqi — [LinkedIn](#) | [GitHub](#)
+Baehaqi — [LinkedIn](https://linkedin.com/in/imambaehaqi) | [GitHub](https://github.com/imambaehaqi)
