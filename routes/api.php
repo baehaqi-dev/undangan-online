@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\GuestController;
 use App\Http\Controllers\InvitationController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +20,7 @@ Route::prefix('v1')->group(function () {
         });
 
         Route::apiResource('invitations', InvitationController::class);
+        Route::apiResource('invitations.guests', GuestController::class)->shallow();
     });
 
 });
