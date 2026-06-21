@@ -30,7 +30,7 @@ REST API untuk platform undangan pernikahan digital, dibangun dengan Laravel 13.
 
 ## 🚀 Instalasi
 
-\`\`\`bash
+```bash
 # Clone repository
 git clone https://github.com/USERNAME/undangan-online.git
 cd undangan-online
@@ -56,44 +56,44 @@ php artisan migrate
 
 # Jalankan server (termasuk queue worker)
 composer run dev
-\`\`\`
+```
 
 ## 🧪 Testing
 
-\`\`\`bash
+```bash
 php artisan test
-\`\`\`
+```
 
 20 test mencakup autentikasi, CRUD undangan dengan otorisasi, dan flow RSVP publik.
 
 ## 📁 Struktur Database
 
-\`\`\`
+```
 users
   └─< invitations
         ├─< galleries
         ├─< guests
         │     └─< rsvps
         └─< rsvps
-\`\`\`
+```
 
 ## 📡 API Documentation
 
-Koleksi Postman tersedia di [\`postman_collection.json\`](./postman_collection.json) — import ke Postman untuk mencoba seluruh endpoint.
+Koleksi Postman tersedia di [`postman_collection.json`](./postman_collection.json) — import ke Postman untuk mencoba seluruh endpoint.
 
 ### Endpoint Utama
 
 | Method | Endpoint | Deskripsi | Auth |
 |--------|----------|-----------|------|
-| POST | \`/api/v1/register\` | Registrasi user baru | - |
-| POST | \`/api/v1/login\` | Login | - |
-| POST | \`/api/v1/logout\` | Logout | ✅ |
-| GET\\|POST\\|PUT\\|DELETE | \`/api/v1/invitations\` | CRUD undangan | ✅ |
-| GET\\|POST | \`/api/v1/invitations/{id}/guests\` | CRUD tamu | ✅ |
-| GET | \`/api/v1/invitations/{id}/statistics\` | Statistik RSVP | ✅ |
-| GET | \`/api/v1/invitations/{id}/export-guests\` | Export CSV | ✅ |
-| GET | \`/api/v1/rsvp/{token}\` | Lihat undangan via token | - |
-| POST | \`/api/v1/rsvp/{token}\` | Submit RSVP | - |
+| POST | `/api/v1/register` | Registrasi user baru | - |
+| POST | `/api/v1/login` | Login | - |
+| POST | `/api/v1/logout` | Logout | ✅ |
+| GET\|POST\|PUT\|DELETE | `/api/v1/invitations` | CRUD undangan | ✅ |
+| GET\|POST | `/api/v1/invitations/{id}/guests` | CRUD tamu | ✅ |
+| GET | `/api/v1/invitations/{id}/statistics` | Statistik RSVP | ✅ |
+| GET | `/api/v1/invitations/{id}/export-guests` | Export CSV | ✅ |
+| GET | `/api/v1/rsvp/{token}` | Lihat undangan via token | - |
+| POST | `/api/v1/rsvp/{token}` | Submit RSVP | - |
 
 ## 🏗️ Prinsip Desain
 
