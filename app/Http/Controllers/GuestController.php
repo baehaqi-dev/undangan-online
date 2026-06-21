@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreGuestRequest;
 use App\Http\Requests\UpdateGuestRequest;
 use App\Http\Resources\GuestResource;
+use App\Jobs\SendWhatsappInvitation;
 use App\Models\Guest;
 use App\Models\Invitation;
 use Illuminate\Support\Str;
@@ -28,6 +29,8 @@ class GuestController extends Controller
             ...$request->validated(),
             'unique_token' => Str::random(16),
         ]);
+
+        SendWhatsappInvitation::dispatch($guest);
 
         return new GuestResource($guest);
     }
