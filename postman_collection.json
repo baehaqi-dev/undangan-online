@@ -1,0 +1,209 @@
+{
+    "info": {
+      "name": "Undangan Online API",
+      "description": "REST API untuk platform undangan pernikahan digital",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "variable": [
+      { "key": "base_url", "value": "http://localhost:8000/api/v1" },
+      { "key": "token", "value": "" },
+      { "key": "invitation_id", "value": "" },
+      { "key": "guest_token", "value": "" }
+    ],
+    "item": [
+      {
+        "name": "Auth",
+        "item": [
+          {
+            "name": "Register",
+            "request": {
+              "method": "POST",
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"name\": \"Baehaqi\",\n  \"email\": \"baehaqi@test.com\",\n  \"password\": \"password123\",\n  \"password_confirmation\": \"password123\"\n}"
+              },
+              "url": { "raw": "{{base_url}}/register", "host": ["{{base_url}}"], "path": ["register"] }
+            }
+          },
+          {
+            "name": "Login",
+            "request": {
+              "method": "POST",
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"email\": \"baehaqi@test.com\",\n  \"password\": \"password123\"\n}"
+              },
+              "url": { "raw": "{{base_url}}/login", "host": ["{{base_url}}"], "path": ["login"] }
+            }
+          },
+          {
+            "name": "Logout",
+            "request": {
+              "method": "POST",
+              "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+              "url": { "raw": "{{base_url}}/logout", "host": ["{{base_url}}"], "path": ["logout"] }
+            }
+          },
+          {
+            "name": "Get Current User",
+            "request": {
+              "method": "GET",
+              "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+              "url": { "raw": "{{base_url}}/user", "host": ["{{base_url}}"], "path": ["user"] }
+            }
+          }
+        ]
+      },
+      {
+        "name": "Invitations",
+        "item": [
+          {
+            "name": "List Invitations",
+            "request": {
+              "method": "GET",
+              "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+              "url": { "raw": "{{base_url}}/invitations", "host": ["{{base_url}}"], "path": ["invitations"] }
+            }
+          },
+          {
+            "name": "Create Invitation",
+            "request": {
+              "method": "POST",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" },
+                { "key": "Authorization", "value": "Bearer {{token}}" }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"slug\": \"baehaqi-dian\",\n  \"groom_name\": \"Baehaqi\",\n  \"bride_name\": \"Dian\",\n  \"event_date\": \"2026-08-20\",\n  \"location\": \"Gedung Serbaguna Tangerang\"\n}"
+              },
+              "url": { "raw": "{{base_url}}/invitations", "host": ["{{base_url}}"], "path": ["invitations"] }
+            }
+          },
+          {
+            "name": "Show Invitation",
+            "request": {
+              "method": "GET",
+              "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+              "url": { "raw": "{{base_url}}/invitations/{{invitation_id}}", "host": ["{{base_url}}"], "path": ["invitations", "{{invitation_id}}"] }
+            }
+          },
+          {
+            "name": "Update Invitation",
+            "request": {
+              "method": "PUT",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" },
+                { "key": "Authorization", "value": "Bearer {{token}}" }
+              ],
+              "body": { "mode": "raw", "raw": "{\n  \"location\": \"Hotel Mercure Tangerang\"\n}" },
+              "url": { "raw": "{{base_url}}/invitations/{{invitation_id}}", "host": ["{{base_url}}"], "path": ["invitations", "{{invitation_id}}"] }
+            }
+          },
+          {
+            "name": "Delete Invitation",
+            "request": {
+              "method": "DELETE",
+              "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+              "url": { "raw": "{{base_url}}/invitations/{{invitation_id}}", "host": ["{{base_url}}"], "path": ["invitations", "{{invitation_id}}"] }
+            }
+          },
+          {
+            "name": "Statistics",
+            "request": {
+              "method": "GET",
+              "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+              "url": { "raw": "{{base_url}}/invitations/{{invitation_id}}/statistics", "host": ["{{base_url}}"], "path": ["invitations", "{{invitation_id}}", "statistics"] }
+            }
+          },
+          {
+            "name": "Export Guests CSV",
+            "request": {
+              "method": "GET",
+              "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+              "url": { "raw": "{{base_url}}/invitations/{{invitation_id}}/export-guests", "host": ["{{base_url}}"], "path": ["invitations", "{{invitation_id}}", "export-guests"] }
+            }
+          }
+        ]
+      },
+      {
+        "name": "Guests",
+        "item": [
+          {
+            "name": "List Guests",
+            "request": {
+              "method": "GET",
+              "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+              "url": { "raw": "{{base_url}}/invitations/{{invitation_id}}/guests", "host": ["{{base_url}}"], "path": ["invitations", "{{invitation_id}}", "guests"] }
+            }
+          },
+          {
+            "name": "Create Guest",
+            "request": {
+              "method": "POST",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" },
+                { "key": "Authorization", "value": "Bearer {{token}}" }
+              ],
+              "body": { "mode": "raw", "raw": "{\n  \"name\": \"Pak Raynor\",\n  \"phone\": \"081234567890\"\n}" },
+              "url": { "raw": "{{base_url}}/invitations/{{invitation_id}}/guests", "host": ["{{base_url}}"], "path": ["invitations", "{{invitation_id}}", "guests"] }
+            }
+          },
+          {
+            "name": "Update Guest",
+            "request": {
+              "method": "PUT",
+              "header": [
+                { "key": "Content-Type", "value": "application/json" },
+                { "key": "Authorization", "value": "Bearer {{token}}" }
+              ],
+              "body": { "mode": "raw", "raw": "{\n  \"phone\": \"081111111111\"\n}" },
+              "url": { "raw": "{{base_url}}/guests/1", "host": ["{{base_url}}"], "path": ["guests", "1"] }
+            }
+          },
+          {
+            "name": "Delete Guest",
+            "request": {
+              "method": "DELETE",
+              "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+              "url": { "raw": "{{base_url}}/guests/1", "host": ["{{base_url}}"], "path": ["guests", "1"] }
+            }
+          }
+        ]
+      },
+      {
+        "name": "RSVP (Public)",
+        "item": [
+          {
+            "name": "View Invitation via Token",
+            "request": {
+              "method": "GET",
+              "url": { "raw": "{{base_url}}/rsvp/{{guest_token}}", "host": ["{{base_url}}"], "path": ["rsvp", "{{guest_token}}"] }
+            }
+          },
+          {
+            "name": "Submit RSVP",
+            "request": {
+              "method": "POST",
+              "header": [{ "key": "Content-Type", "value": "application/json" }],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"guest_name\": \"Pak Raynor\",\n  \"attendance\": \"hadir\",\n  \"total_guests\": 2,\n  \"message\": \"Selamat menempuh hidup baru!\"\n}"
+              },
+              "url": { "raw": "{{base_url}}/rsvp/{{guest_token}}", "host": ["{{base_url}}"], "path": ["rsvp", "{{guest_token}}"] }
+            }
+          },
+          {
+            "name": "List RSVPs (Owner)",
+            "request": {
+              "method": "GET",
+              "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+              "url": { "raw": "{{base_url}}/invitations/{{invitation_id}}/rsvps", "host": ["{{base_url}}"], "path": ["invitations", "{{invitation_id}}", "rsvps"] }
+            }
+          }
+        ]
+      }
+    ]
+  }
